@@ -17,12 +17,14 @@ export const metadata: Metadata = {
     description:
       "Create a wedding website your guests will love in minutes. RSVPs, your story, photo gallery, schedule, and registry — all in one elegant page.",
     url: "/",
+    images: ["/og-image.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Wedd.space | Your Wedding Website, Beautifully Simple",
     description:
       "Create a wedding website your guests will love in minutes. RSVPs, your story, photo gallery, schedule, and registry.",
+    images: ["/og-image.png"],
   },
 };
 
@@ -69,7 +71,12 @@ export default function RootLayout({
                     "A wedding website builder that gathers your story, RSVPs, schedule, photo gallery, and registry onto one shareable page — no app, no login, no reply-all.",
                   url: "https://www.wedd.space/",
                   category: "Wedding Website Builder Software",
-                  brand: { "@id": "https://www.wedd.space/#organization" },
+                  image: "https://www.wedd.space/og-image.png",
+                  brand: {
+                    "@type": "Organization",
+                    name: "wedd.space",
+                    url: "https://www.wedd.space/",
+                  },
                   offers: [
                     {
                       "@type": "Offer",
