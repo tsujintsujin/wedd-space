@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import { instrumentSerif, spaceGrotesk, spaceMono } from "./fonts";
+import Toaster from "./components/Toaster";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.wedd.space"),
@@ -73,7 +75,7 @@ export default function RootLayout({
                       "@type": "Offer",
                       name: "Free",
                       description:
-                        "1 wedding page, RSVP tracking, photo gallery (50 photos), wedd.space/yournames link.",
+                        "1 wedding page at wedd.space/yournames, RSVP tracking, photo gallery (up to ~25 photos). 1-day delivery.",
                       price: "0",
                       priceCurrency: "PHP",
                       url: "https://www.wedd.space/#pricing",
@@ -83,7 +85,17 @@ export default function RootLayout({
                       "@type": "Offer",
                       name: "Premium",
                       description:
-                        "Everything in Free, plus custom domain support, unlimited photos & guest uploads, multiple events & itineraries, guest list export (CSV), and priority support.",
+                        "Everything in Free, plus multiple events & itineraries, guest list export (CSV), photo gallery (up to ~150 photos), and priority support. 3-day delivery.",
+                      price: "499",
+                      priceCurrency: "PHP",
+                      url: "https://www.wedd.space/#pricing",
+                      availability: "https://schema.org/InStock",
+                    },
+                    {
+                      "@type": "Offer",
+                      name: "All Out",
+                      description:
+                        "Everything in Premium, plus a custom design built around your motif with a personal consultation. 7-day delivery.",
                       price: "799",
                       priceCurrency: "PHP",
                       url: "https://www.wedd.space/#pricing",
@@ -96,7 +108,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-cream text-ink font-body antialiased">{children}</body>
+      <body className="bg-cream text-ink font-body antialiased">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

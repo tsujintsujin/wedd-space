@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import LoginButton from "@/app/components/auth/LoginButton";
 
 const navItems = [
   { href: "#features", label: "Features" },
@@ -10,9 +12,28 @@ const navItems = [
 
 export default function Header() {
   const shouldReduceMotion = useReducedMotion();
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const setOffset = () => {
+      document.documentElement.style.setProperty(
+        "--header-height",
+        `${el.getBoundingClientRect().height}px`
+      );
+    };
+
+    setOffset();
+    const observer = new ResizeObserver(setOffset);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.header
+      ref={headerRef}
       initial={shouldReduceMotion ? false : { y: -28 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -35,12 +56,15 @@ export default function Header() {
           ))}
         </nav>
 
-        <a
-          href="#get-started"
-          className="focus-ring cursor-pointer border border-ink/25 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:border-wine hover:text-wine"
-        >
-          Get started
-        </a>
+        <div className="flex items-center gap-5">
+          <LoginButton className="focus-ring hidden cursor-pointer font-mono text-[11px] uppercase tracking-[0.22em] text-muted transition-colors duration-200 hover:text-wine sm:inline-block" />
+          <a
+            href="#get-started"
+            className="focus-ring cursor-pointer border border-ink/25 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:border-wine hover:text-wine"
+          >
+            Get started
+          </a>
+        </div>
       </div>
     </motion.header>
   );

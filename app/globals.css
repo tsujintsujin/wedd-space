@@ -4,6 +4,7 @@
 
 html {
   background-color: #f5ead8;
+  --header-height: 88px; /* fallback until Header measures itself on mount */
 }
 
 body {
@@ -24,7 +25,7 @@ body::before {
 }
 
 section[id] {
-  scroll-margin-top: 98px; /* header height (88px) + 10px clearance */
+  scroll-margin-top: calc(var(--header-height) - 40px);
 }
 
 .focus-ring {
@@ -38,6 +39,33 @@ section[id] {
 ::selection {
   background: #7e2436;
   color: #f5ead8;
+}
+
+/* Dark-panel context (e.g. the wine-deep CTA form) needs its own selection
+   contrast — the default wine-on-cream pairing above reads too flat against
+   the already-dark wine-deep surface. */
+.bg-wine-deep ::selection {
+  background: #f5ead8;
+  color: #3a1018;
+}
+
+/* Kill the browser's forced light autofill background on inputs/textareas
+   living on dark panels (name, email, wedding-date trigger, message). The
+   long transition-delay defers the browser's own autofill styling long
+   enough for the inset box-shadow trick to paint over it instead. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-text-fill-color: #f5ead8;
+  -webkit-box-shadow: 0 0 0px 1000px #3a1018 inset;
+  box-shadow: 0 0 0px 1000px #3a1018 inset;
+  caret-color: #f5ead8;
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
 
 /* Marquee ticker */
