@@ -4,7 +4,8 @@
 
 Draft landing page for **wedd.space**, a SaaS product for building wedding websites (RSVP, story, gallery, schedule, registry). Built with Next.js 16, React 19, Tailwind CSS 3 — mirrors the known-good config from `../Portfolio` (same Tailwind v3 setup, avoids the Tailwind v4 dev-mode bug documented there).
 
-**Domain:** wedd.space (purchased, not yet pointed at a deployment)
+**Domain:** wedd.space — live on Vercel at https://www.wedd.space/
+**GitHub:** https://github.com/tsujintsujin/wedd-space
 **Local:** `npm run dev` at http://localhost:3030 (port 3030 to avoid clashing with Portfolio/Dashboard)
 **Live demo referenced on the page:** https://cambial-wedding.vercel.app/ (repo at `../Free Projects/Clients/GalleryType`, incomplete)
 

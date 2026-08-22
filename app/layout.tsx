@@ -35,11 +35,6 @@ export default function RootLayout({
       className={`scroll-smooth ${instrumentSerif.variable} ${spaceGrotesk.variable} ${spaceMono.variable}`}
     >
       <head>
-        <link
-          rel="icon"
-          type="image/svg+xml"
-          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23F5EAD8'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-style='italic' font-size='19' font-weight='600' fill='%237E2436' text-anchor='middle'%3Ew%3C/text%3E%3C/svg%3E"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
