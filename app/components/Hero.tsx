@@ -88,9 +88,8 @@ export default function Hero() {
           {/* back card */}
           <motion.div
             variants={{
-              hidden: { opacity: 0, y: 24, rotate: -2 },
+              hidden: { y: 24, rotate: -2 },
               visible: {
-                opacity: 1,
                 y: 0,
                 rotate: -6,
                 transition: { duration: 0.8, ease: EASE_EDITORIAL },
@@ -115,9 +114,8 @@ export default function Hero() {
           {/* front card */}
           <motion.div
             variants={{
-              hidden: { opacity: 0, y: 24, rotate: 3 },
+              hidden: { y: 24, rotate: 3 },
               visible: {
-                opacity: 1,
                 y: 0,
                 rotate: 4,
                 transition: { duration: 0.8, ease: EASE_EDITORIAL },
@@ -140,9 +138,8 @@ export default function Hero() {
           {/* seal */}
           <motion.div
             variants={{
-              hidden: { opacity: 0, scale: 0.6, rotate: -8 },
+              hidden: { scale: 0.85, rotate: -8 },
               visible: {
-                opacity: 1,
                 scale: 1,
                 rotate: -12,
                 transition: { duration: 0.6, ease: EASE_EDITORIAL, delay: 0.5 },

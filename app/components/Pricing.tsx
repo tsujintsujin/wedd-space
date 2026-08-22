@@ -77,10 +77,10 @@ export default function Pricing() {
               key={plan.name}
               initial={
                 shouldReduceMotion
-                  ? { opacity: 1, rotate: plan.rotate }
-                  : { opacity: 0, y: 40, rotate: plan.rotate * 0.4 }
+                  ? { rotate: plan.rotate }
+                  : { y: 40, rotate: plan.rotate * 0.4 }
               }
-              whileInView={{ opacity: 1, y: 0, rotate: plan.rotate }}
+              whileInView={{ y: 0, rotate: plan.rotate }}
               whileHover={shouldReduceMotion ? undefined : { rotate: plan.hoverRotate, y: -6 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: EASE_EDITORIAL, delay: i * 0.15 }}

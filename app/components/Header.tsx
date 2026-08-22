@@ -13,8 +13,8 @@ export default function Header() {
 
   return (
     <motion.header
-      initial={shouldReduceMotion ? false : { y: -28, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={shouldReduceMotion ? false : { y: -28 }}
+      animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-cream/85 backdrop-blur-md"
     >

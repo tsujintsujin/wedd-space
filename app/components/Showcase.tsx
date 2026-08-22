@@ -69,8 +69,8 @@ export default function Showcase() {
             href="https://cambial-wedding.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={shouldReduceMotion ? {} : { y: 30 }}
+            whileInView={{ y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="group focus-ring relative block cursor-pointer lg:order-2"
