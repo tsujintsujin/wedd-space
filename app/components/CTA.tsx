@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import { useAuthUser } from "@/lib/useAuthUser";
 import GCashModal from "./GCashModal";
 import DatePicker from "./DatePicker";
 import TierSelect from "./TierSelect";
 
 const TIERS = [
-  { id: "free", label: "Free — ₱0", amount: 0 },
-  { id: "premium", label: "Premium — ₱499", amount: 499 },
-  { id: "allout", label: "All Out — ₱799", amount: 799 },
+  { id: "free", label: "Free — $0", amount: 0 },
+  { id: "premium", label: "Premium — $49", amount: 49 },
+  { id: "allout", label: "Full — $99", amount: 99 },
 ] as const;
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -24,6 +25,7 @@ export default function CTA() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [gcashOpen, setGcashOpen] = useState(false);
+  const { user: authUser } = useAuthUser();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -32,6 +34,10 @@ export default function CTA() {
       setTier(requested as (typeof TIERS)[number]["id"]);
     }
   }, []);
+
+  useEffect(() => {
+    if (authUser?.email) setEmail((current) => current || authUser.email!);
+  }, [authUser]);
 
   const selectedTier = TIERS.find((t) => t.id === tier)!;
 
@@ -84,14 +90,14 @@ export default function CTA() {
                 variants={fadeUp}
                 className="mt-4 font-display text-4xl italic leading-[1.02] text-cream md:text-5xl"
               >
-                Tell us about your day.
+                Have questions?
               </motion.h2>
               <motion.p
                 variants={fadeUp}
                 className="mt-5 max-w-md font-body text-lg leading-relaxed text-cream/70"
               >
-                Send the basics and we&apos;ll reach out to talk through the
-                details &mdash; this starts a conversation, not an automated build.
+                Pricing, timelines, what&apos;s included &mdash; ask us anything.
+                This starts a conversation, not an automated build.
               </motion.p>
             </div>
 

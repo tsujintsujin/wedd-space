@@ -7,7 +7,7 @@ const plans = [
   {
     id: "free",
     name: "Free",
-    price: "₱0",
+    price: "$0",
     period: "forever",
     delivery: "1-day delivery",
     description: "A clean digital invitation, ready fast.",
@@ -16,6 +16,7 @@ const plans = [
       "Date, location, motif & your story",
       "Guest RSVP (attending, meal, plus-ones)",
       "Photo gallery (up to ~25 photos)",
+      "Your site is live forever",
     ],
     cta: "Start free",
     preferred: false,
@@ -24,16 +25,17 @@ const plans = [
   {
     id: "premium",
     name: "Premium",
-    price: "₱499",
+    price: "$49",
     period: "one-time",
     delivery: "3-day delivery",
     description: "Full logistics for the whole wedding.",
     features: [
       "Everything in Free",
-      "Multiple events & itineraries",
-      "Guest list export (CSV)",
-      "Photo gallery (up to ~150 photos)",
-      "Priority support",
+      "Up to 4 pages",
+      "A place for guests to leave a message",
+      "RSVP export as PDF or CSV (PDF has a designed layout)",
+      "Photo gallery (up to ~100 photos)",
+      "With support",
     ],
     cta: "Get Premium",
     preferred: true,
@@ -41,18 +43,18 @@ const plans = [
   },
   {
     id: "allout",
-    name: "All Out",
-    price: "₱799",
+    name: "Full",
+    price: "$99",
     period: "one-time",
     delivery: "7-day delivery",
     description: "Custom-designed, working directly with you.",
     features: [
       "Everything in Premium",
-      "Design built around your actual motif",
       "Personal consultation, not a template",
-      "Optional livestream link for absent guests",
+      "Design built around your actual motif",
+      "Priority support",
     ],
-    cta: "Go All Out",
+    cta: "Get Full",
     preferred: false,
     rotate: 3,
   },
@@ -148,6 +150,10 @@ export default function Pricing() {
             </motion.div>
           ))}
         </div>
+
+        <p className="mt-12 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
+          Custom link can be requested for a separate fee, depending on the link.
+        </p>
       </div>
     </section>
   );

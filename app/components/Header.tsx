@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import LoginButton from "@/app/components/auth/LoginButton";
+import AccountMenu from "@/app/components/AccountMenu";
+import { useAuthUser } from "@/lib/useAuthUser";
 
 const navItems = [
   { href: "#features", label: "Features" },
@@ -13,6 +15,7 @@ const navItems = [
 export default function Header() {
   const shouldReduceMotion = useReducedMotion();
   const headerRef = useRef<HTMLElement>(null);
+  const { user, loading } = useAuthUser();
 
   useEffect(() => {
     const el = headerRef.current;
@@ -57,13 +60,21 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-5">
-          <LoginButton className="focus-ring hidden cursor-pointer font-mono text-[11px] uppercase tracking-[0.22em] text-muted transition-colors duration-200 hover:text-wine sm:inline-block" />
-          <a
-            href="#get-started"
-            className="focus-ring cursor-pointer border border-ink/25 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:border-wine hover:text-wine"
-          >
-            Get started
-          </a>
+          {loading ? (
+            <div className="h-[38px] w-[132px] animate-pulse border border-ink/10 bg-ink/5" aria-hidden="true" />
+          ) : user ? (
+            <AccountMenu user={user} />
+          ) : (
+            <>
+              <LoginButton className="focus-ring hidden cursor-pointer font-mono text-[11px] uppercase tracking-[0.22em] text-muted transition-colors duration-200 hover:text-wine sm:inline-block" />
+              <a
+                href="#get-started"
+                className="focus-ring cursor-pointer border border-ink/25 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink transition-colors duration-200 hover:border-wine hover:text-wine"
+              >
+                Get started
+              </a>
+            </>
+          )}
         </div>
       </div>
     </motion.header>

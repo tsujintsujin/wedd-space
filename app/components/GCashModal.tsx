@@ -2,12 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-toastify";
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-
-const GCASH_NUMBER = "09760994238";
 
 export default function GCashModal({
   isOpen,
@@ -54,11 +51,6 @@ export default function GCashModal({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(GCASH_NUMBER);
-    toast.success("GCash number copied", { position: "bottom-right", autoClose: 3000 });
-  };
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -85,7 +77,7 @@ export default function GCashModal({
               Complete your order
             </p>
             <h3 id="gcash-modal-title" className="mt-3 font-display text-3xl italic text-ink">
-              Pay via GCash
+              Order received
             </h3>
             <p className="mt-2 font-mono text-xs text-faint">{tierLabel}</p>
 
@@ -94,28 +86,13 @@ export default function GCashModal({
                 Amount
               </p>
               <p className="mt-2 font-display text-4xl italic text-ink">
-                &#8369;{amount}
+                ${amount}
               </p>
-            </div>
-
-            <div className="mt-6 bg-cream-deep p-6 text-center">
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
-                GCash number
-              </p>
-              <p className="mt-2 font-mono text-lg font-bold text-ink">{GCASH_NUMBER}</p>
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="focus-ring mt-4 w-full cursor-pointer bg-wine px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.2em] text-cream transition-colors duration-200 hover:bg-wine-deep"
-              >
-                Copy number
-              </button>
             </div>
 
             <p className="mt-6 text-sm leading-relaxed text-muted">
-              Send the amount above, then reply to the confirmation email with your
-              GCash reference number. We&apos;ll start on your page as soon as
-              payment is confirmed.
+              We&apos;ll email you a secure payment link to complete your order.
+              We&apos;ll start on your page as soon as payment is confirmed.
             </p>
 
             <button

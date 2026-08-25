@@ -1,0 +1,145 @@
+WEDD.SPACE — PRODUCT & TEMPLATE SYSTEM
+========================================
+(Reference prompt/briefing doc — what this product is, what a "template" means
+here, and the rules any new template must follow. Written for handing to a
+future session, a collaborator, or an AI that needs context fast.)
+
+
+WHAT WEDD.SPACE IS
+-------------------
+wedd.space is a build-your-own wedding website SaaS, targeting the US market.
+A couple signs up, fills out their wedding details in a dashboard editor, and
+gets a real public page at wedd.space/<their-slug> — story, RSVP tracking,
+schedule/venue, photo gallery, gift registry, all on one link they send to
+guests instead of a group chat.
+
+It is NOT a marketing brochure product and NOT a per-client custom-build
+shop. It is closer to a Squarespace/Carrd for weddings: couples pick a
+template, fill in their own content through an editor, and publish. The
+whole point is that the SAME template code serves every couple who chooses
+it — nobody gets a bespoke copy of the code.
+
+
+WHAT A "TEMPLATE" IS HERE
+---------------------------
+A template is one visual design of the wedding page (fonts, layout, motion,
+mood) implemented as a single React component that is a PURE FUNCTION of a
+`SiteConfig` object. No couple-specific data ever lives in the template's
+code — it all lives in `SiteConfig`, which is stored per-user in Supabase
+(`sites` table, one JSONB `config` column) and passed in as a prop.
+
+Current templates: ONE — "Evergreen" (`app/templates/evergreen/`). It was
+deliberately built as a single, well-made template rather than three
+mediocre ones, specifically to avoid a lot of codework and bad output while
+the core editing/publishing machinery was being built. More templates get
+added later by following the rules below, not by copying and forking
+Evergreen's code.
+
+`SiteConfig` shape (`app/templates/_lib/types.ts`):
+  - templateSlug: string
+  - coupleNames: { partnerA, partnerB }
+  - weddingDate: "YYYY-MM-DD"
+  - heroPhotos: PhotoSlot[]        (5-8)
+  - story: StoryBlock[]            (title, body, photo)
+  - weddingLocation / receptionLocation: MapLocation (label, address, lat, lng)
+  - colorMotif: string[]           (2-6 hex colors)
+  - dressCode: string
+  - rsvps: RsvpEntry[]
+
+  PhotoSlot = { id, url?, focalX?, focalY?, zoom? } — focalX/focalY (0-100,
+  default 50) and zoom (1+, default 1) encode the pan/crop the couple chose
+  for that photo. Defaults reproduce plain object-cover with no data, so a
+  photo with no position data renders identically to today's behavior.
+
+
+WHERE A TEMPLATE'S CODE LIVES
+-------------------------------
+`app/templates/<template-slug>/` — one folder per template, containing at
+minimum a `<Name>View.tsx` (the actual template component) and a `page.tsx`
+(the read-only public demo route at `/templates/<template-slug>`).
+
+Shared building blocks used by EVERY template (never duplicate these inside
+a template's own folder — import from `app/templates/_components/` and
+`app/templates/_lib/`):
+  - PhotoSlot.tsx — renders a real Cloudinary photo (with focal/zoom applied
+    via `transform: scale(zoom) translate(panX%, panY%)`) or a gradient
+    placeholder if empty.
+  - EditableText.tsx — inline click-to-edit text; no-op wrapper when not
+    editable.
+  - EditablePhotoOverlay.tsx — click-to-upload + reposition affordance over
+    a PhotoSlot; renders bare when not editable.
+  - PhotoRepositionControl.tsx — the drag-to-pan / scroll-to-zoom layer
+    shown while a photo is in reposition mode.
+  - LocationCard.tsx, ColorMotifSwatches.tsx, Countdown.tsx, RsvpList.tsx —
+    other shared, template-agnostic display pieces.
+  - _lib/types.ts — the SiteConfig contract itself. A new template consumes
+    this type; it does not invent its own data shape.
+
+
+THE CORE RULE: ONE COMPONENT, THREE CONTEXTS
+-----------------------------------------------
+Every template's View component is rendered, UNCHANGED, in three different
+places:
+  1. The dashboard editor's live preview (`app/dashboard/SiteEditor.tsx`) —
+     rendered with `editable` on, wired to the couple's in-progress state.
+  2. The public page (`app/[slug]/page.tsx`) — rendered read-only, server
+     side, for anyone with the link, no auth required.
+  3. Its own demo route (`app/templates/<slug>/page.tsx`) — rendered
+     read-only with sample data, for browsing templates before signup.
+
+This is why every interactive/editable prop on a template View MUST be
+OPTIONAL and default to inert. Adding a feature to the editor must never
+require forking the template or adding a "preview version" of it — if it
+does, the feature was implemented wrong. Concretely: `editable?: boolean`,
+`onFieldChange?: (...)`, `onUploadPhoto?: (...)`, `uploadingSlot?: string |
+null`. When these are omitted (contexts 2 and 3 above), the component must
+render byte-for-byte like a static page — this is what makes the public
+and demo pages provably safe from any editor-only change.
+
+
+RULES FOR A NEW TEMPLATE
+---------------------------
+1. Consume `SiteConfig` as-is. If a template needs a field the type doesn't
+   have, that's a `SiteConfig` schema change (affects every template, needs
+   a migration), not a per-template escape hatch.
+2. Build every text touch point with `EditableText`, every photo touch
+   point with `EditablePhotoOverlay` wrapping `PhotoSlot` — never raw
+   `<img>`/`<p>` for content that the dashboard editor is supposed to be
+   able to touch.
+3. Use the same slot-key naming convention the editor's left-panel form
+   uses (`hero-${i}`, `story-${i}`) so `uploadingSlot` stays consistent no
+   matter which panel (left form vs. live preview) triggered an upload.
+4. Never fetch data, call Supabase, or read auth state inside a template
+   component. Templates are dumb rendering of whatever `SiteConfig` (and
+   optional editor callbacks) they're handed — all data fetching happens in
+   the pages that render them (`app/[slug]/page.tsx`, `SiteEditor.tsx`).
+5. No template-specific fields on the couple's data. A field that only
+   Template B needs is a sign the field belongs in per-template style
+   config (e.g. a `templateSlug`-keyed constants file), not in the shared
+   `SiteConfig`.
+6. Photos: never bypass the pan/zoom model. `object-position` alone silently
+   fails once combined with a zoom transform (resolved before transform,
+   so it can't see room a later scale() creates) — always compose pan +
+   zoom in one `transform: scale(zoom) translate(panX%, panY%)`, with
+   `maxOffset = ((zoom-1)/zoom)*50` so the photo can never stop covering
+   its frame regardless of pan value.
+7. New templates get added to whatever template-picker UI exists in the
+   dashboard (not built yet as of this doc) — a couple chooses a template,
+   `templateSlug` gets set, and `SiteEditor.tsx` renders the matching View.
+   A template is never assigned by editing code per-couple.
+8. Photo storage is Cloudinary, never Supabase Storage — `SiteConfig` only
+   ever stores a Cloudinary URL string, never binary data. Uploads go
+   through the signed `app/api/cloudinary/sign` endpoint.
+9. Publishing: a couple's page goes live at wedd.space/<slug>, where <slug>
+   is derived once from their names on first publish and then kept stable
+   forever (later saves update content, never the slug). This is enforced
+   in `app/api/site/route.ts`, not per-template.
+
+
+WHAT IS EXPLICITLY OUT OF SCOPE FOR A TEMPLATE
+--------------------------------------------------
+- Auth, payment, and account logic — all lives outside `app/templates/`.
+- Anything client-specific ("this template is for the Smith wedding") —
+  templates are products, not projects.
+- Duplicating shared components — if two templates need near-identical
+  behavior, that behavior belongs in `_components/`, not copy-pasted.

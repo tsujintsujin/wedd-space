@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const TIER_LABELS: Record<string, string> = {
-  free: "Free",
-  premium: "Premium (₱499)",
-  allout: "All Out (₱799)",
+  free: "Free ($0)",
+  premium: "Premium ($49)",
+  allout: "Full ($99)",
 };
 
 export async function POST(request: NextRequest) {
