@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { EASE_EDITORIAL, fadeUp, revealLine, staggerContainer } from "@/lib/motion";
 
@@ -23,14 +24,6 @@ export default function Hero() {
           animate="visible"
           variants={staggerContainer(0.16)}
         >
-          <motion.div
-            variants={fadeUp}
-            className="mb-8 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-wine"
-          >
-            <span className="h-px w-10 bg-wine/60" />
-            No. 001 &mdash; wedd.space
-          </motion.div>
-
           <h1 className="font-display text-[3.4rem] italic leading-[0.98] text-ink sm:text-7xl md:text-[5.5rem]">
             {headlineLines.map((line) => (
               <span key={line} className="block overflow-hidden">
@@ -65,12 +58,12 @@ export default function Hero() {
             >
               Start your page
             </a>
-            <a
-              href="#showcase"
+            <Link
+              href="/templates"
               className="focus-ring w-full cursor-pointer border border-ink/25 px-8 py-3.5 text-center font-mono text-xs font-bold uppercase tracking-[0.2em] text-ink transition-colors duration-200 hover:border-wine hover:text-wine sm:w-auto"
             >
               View live example
-            </a>
+            </Link>
           </motion.div>
 
           <motion.p variants={fadeUp} className="mt-6 font-mono text-xs text-faint">

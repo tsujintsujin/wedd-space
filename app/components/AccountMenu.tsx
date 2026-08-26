@@ -1,11 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import LogoutButton from "@/app/components/auth/LogoutButton";
 import type { User } from "@supabase/supabase-js";
 
-export default function AccountMenu({ user }: { user: User | null }) {
+const navItems = [
+  { href: "#features", label: "Features" },
+  { href: "#showcase", label: "Showcase" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "/templates", label: "Templates" },
+];
+
+export default function AccountMenu({ user, showNavLinks = true }: { user: User | null; showNavLinks?: boolean }) {
   const [open, setOpen] = useState(false);
   const email = user?.email ?? null;
   const fullName =
@@ -63,6 +71,31 @@ export default function AccountMenu({ user }: { user: User | null }) {
                 {email}
               </p>
             )}
+            <div className={`border-b border-ink/10 py-1 md:hidden ${showNavLinks ? "" : "hidden"}`}>
+              {showNavLinks && navItems.map((item) =>
+                item.href.startsWith("/") ? (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    onClick={() => setOpen(false)}
+                    className="focus-ring block cursor-pointer px-4 py-2.5 text-right font-mono text-xs uppercase tracking-[0.16em] text-ink transition-colors duration-150 hover:bg-surface hover:text-wine"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    onClick={() => setOpen(false)}
+                    className="focus-ring block cursor-pointer px-4 py-2.5 text-right font-mono text-xs uppercase tracking-[0.16em] text-ink transition-colors duration-150 hover:bg-surface hover:text-wine"
+                  >
+                    {item.label}
+                  </a>
+                )
+              )}
+            </div>
             <a
               href="/dashboard"
               role="menuitem"

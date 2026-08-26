@@ -44,15 +44,9 @@ export default function Features() {
           className="mb-16 flex flex-col gap-6 md:mb-24 md:flex-row md:items-end md:justify-between"
         >
           <div>
-            <motion.p
-              variants={fadeUp}
-              className="font-mono text-[11px] uppercase tracking-[0.28em] text-wine"
-            >
-              Index
-            </motion.p>
             <motion.h2
               variants={fadeUp}
-              className="mt-4 max-w-lg font-display text-4xl italic leading-[1.02] text-ink md:text-6xl"
+              className="max-w-lg font-display text-4xl italic leading-[1.02] text-ink md:text-6xl"
             >
               Everything the invitation couldn&apos;t hold.
             </motion.h2>
@@ -82,10 +76,10 @@ export default function Features() {
               <span className="font-display text-4xl italic leading-none text-ink/10 transition-colors duration-300 group-hover:text-wine/30 sm:text-6xl md:text-7xl">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="font-display text-2xl italic leading-tight text-ink md:text-3xl">
+              <h3 className="col-start-2 font-display text-2xl italic leading-tight text-ink md:text-3xl">
                 {f.title}
               </h3>
-              <p className="font-body text-[15px] leading-relaxed text-muted md:max-w-md">
+              <p className="col-start-2 font-body text-[15px] leading-relaxed text-muted md:col-start-3 md:max-w-md">
                 {f.body}
               </p>
             </motion.div>

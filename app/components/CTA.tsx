@@ -80,15 +80,9 @@ export default function CTA() {
 
           <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
             <div>
-              <motion.p
-                variants={fadeUp}
-                className="font-mono text-[11px] uppercase tracking-[0.28em] text-cream/60"
-              >
-                No. 002 &mdash; Get started
-              </motion.p>
               <motion.h2
                 variants={fadeUp}
-                className="mt-4 font-display text-4xl italic leading-[1.02] text-cream md:text-5xl"
+                className="font-display text-4xl italic leading-[1.02] text-cream md:text-5xl"
               >
                 Have questions?
               </motion.h2>
